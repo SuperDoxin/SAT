@@ -4,7 +4,7 @@ struct Range
     {
     real start;
     real stop;
-    real inside(real offset)
+    real overlap(real offset)
         {
         if (offset<start || offset>stop)
             return 0;

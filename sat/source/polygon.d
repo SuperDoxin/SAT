@@ -24,7 +24,7 @@ class Polygon
             }
         return range;
         }
-    Vector inside(Vertex pos)
+    Vector overlap(Vertex pos)
         {
         Vector vecpos=cast(Vector)pos;
         real min_offset=real.infinity;
@@ -34,7 +34,7 @@ class Polygon
             direction=direction.rot90;
             real proj_vecpos=vecpos.project_scalar(direction);
             Range proj_self=this.project_scalar(direction);
-            real offset=proj_self.inside(proj_vecpos);
+            real offset=proj_self.overlap(proj_vecpos);
             if(offset==0)
                 return Vector(0,0);
             if(math.abs(offset)<min_offset)
