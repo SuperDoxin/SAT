@@ -4,9 +4,11 @@ struct Range
     {
     real start;
     real stop;
-    bool inside(real offset)
+    real inside(real offset)
         {
-        return (offset>=start && offset<=stop);
+        if (offset<start || offset>stop)
+            return 0;
+        return math.fmin(offset-start,stop-offset);
         }
     }
 
@@ -60,6 +62,10 @@ struct Vector
 
     @property
         {
+        bool zero()
+            {
+            return (this.x==0&&this.y==0);
+            }
         real length()
             {
             return math.sqrt(this.dot(this));
@@ -69,6 +75,10 @@ struct Vector
             real ln=this.length;
             Vector v={this.x/ln,this.y/ln};
             return v;
+            }
+        Vector rot90()
+            {
+            return Vector(-this.y,this.x);
             }
         }
     }

@@ -3,38 +3,47 @@ import vertex;
 class Polygon
     {
     Vertex[] vertices;
-    Range project(Vector vec)
+    Range project_scalar(Vector vec)
         {
         Range range;
         bool first=true;
         foreach(Vertex v; vertices)
             {
-            Vector projected=(cast(Vector)v).project(vec);
+            real projected=(cast(Vector)v).project_scalar(vec);
             if(first)
                 {
-                range.start=projected.length;
-                range.stop=projected.length;
+                range.start=projected;
+                range.stop=projected;
                 first=false;
                 }
             
-            if(projected.length<range.start)
-                range.start=projected.length;
-            if(projected.length>range.stop)
-                range.stop=projected.length;
+            if(projected<range.start)
+                range.start=projected;
+            if(projected>range.stop)
+                range.stop=projected;
             }
         return range;
         }
-    bool inside(Vertex pos)
+    Vector inside(Vertex pos)
         {
         Vector vecpos=cast(Vector)pos;
+        real min_offset=real.infinity;
+        Vector min_direction;
         foreach(Vector direction; this.vectors)
             {
+            direction=direction.rot90;
             real proj_vecpos=vecpos.project_scalar(direction);
-            Range proj_self=this.project(direction);
-            if(!proj_self.inside(proj_vecpos))
-                return false;
+            Range proj_self=this.project_scalar(direction);
+            real offset=proj_self.inside(proj_vecpos);
+            if(offset==0)
+                return Vector(0,0);
+            if(math.abs(offset)<min_offset)
+                {
+                min_offset=offset;
+                min_direction=direction.unit*offset;
+                }
             }
-        return true;
+        return min_direction.rot90.rot90;
         }
     @property
         {

@@ -21,18 +21,6 @@ void render_polygon(Polygon poly,ubyte r,ubyte g,ubyte b)
         Vertex v2=poly.vertices[(i+1)%poly.vertices.length];
         render_line(v1,v2,r,g,b);
         }
-    
-    writeln("---");
-    foreach(Vector direction;poly.vectors)
-        {
-        writeln(direction);
-        Range range=poly.project(direction);
-        writeln(range);
-        writeln();
-        Vertex v1=cast(Vertex)(direction.unit*range.start);
-        Vertex v2=cast(Vertex)(direction.unit*range.stop);
-        render_line(v1,v2,r,g,b);
-        }
     }
 
 int main()
@@ -48,14 +36,14 @@ int main()
     auto poly1=new Polygon();
     auto poly2=new Polygon();
     
-    poly1.vertices~=Vertex(640/2-32,480/2-32);
-    poly1.vertices~=Vertex(640/2+32,480/2-32);
-    poly1.vertices~=Vertex(640/2-32,480/2+32);
+    poly1.vertices~=Vertex(640/2-128,480/2-128);
+    poly1.vertices~=Vertex(640/2+128,480/2-128);
+    poly1.vertices~=Vertex(640/2-128,480/2+128);
     
-    poly2.vertices~=Vertex(640/3-32,480/2-32);
-    poly2.vertices~=Vertex(640/3+32,480/2-32);
-    poly2.vertices~=Vertex(640/3+32,480/2+32);
-    poly2.vertices~=Vertex(640/3-32,480/2+32);
+    poly2.vertices~=Vertex(640/3-128,480/2-128);
+    poly2.vertices~=Vertex(640/3+128,480/2-128);
+    poly2.vertices~=Vertex(640/3+128,480/2+128);
+    poly2.vertices~=Vertex(640/3-128,480/2+128);
     
     while(true)
         {
@@ -77,12 +65,16 @@ int main()
         int mouse_y;
         SDL_GetMouseState(&mouse_x,&mouse_y);
         
-        //Range range=poly1.project(Vector(1,0));
-        if(poly1.inside(Vertex(mouse_x,mouse_y)))
-            render_polygon(poly1,255,255,255);
-        else
+        Vector projection=poly1.inside(Vertex(mouse_x,mouse_y));
+        
+        if(projection.zero)
             render_polygon(poly1,255,0,0);
-        //render_polygon(poly2,0,255,0);
+        else
+            {
+            render_polygon(poly1,255,255,255);
+            
+            render_line(Vertex(mouse_x,mouse_y),Vertex(mouse_x,mouse_y)+projection,255,255,0);
+            }
         
         renderer.SDL_RenderPresent();
         SDL_Delay(16);
