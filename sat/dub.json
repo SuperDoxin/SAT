@@ -1,0 +1,10 @@
+{
+	"name": "sat",
+	"description": "A Separating Axis theorem implementation.",
+	"copyright": "Copyright © 2015, lieuwe",
+	"authors": ["lieuwe"],
+	"dependencies": {
+	},
+	"sourcePaths": [ "source" ],
+    "importPaths": [ "source" ]
+}
