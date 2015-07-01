@@ -65,7 +65,7 @@ int main()
         int mouse_y;
         SDL_GetMouseState(&mouse_x,&mouse_y);
         
-        Vector projection=poly1.inside(Vertex(mouse_x,mouse_y));
+        Vector projection=poly1.overlap(Vertex(mouse_x,mouse_y));
         
         if(projection.zero)
             render_polygon(poly1,255,0,0);
