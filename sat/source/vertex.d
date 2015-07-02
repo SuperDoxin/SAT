@@ -4,6 +4,23 @@ struct Range
     {
     real start;
     real stop;
+    real overlap(Range other)
+        {
+        real m1=(this.start+this.stop)/2;
+        real r1=math.abs(this.start-this.stop)/2;
+        
+        real m2=(other.start+other.stop)/2;
+        real r2=math.abs(other.start-other.stop)/2;
+        
+        if(math.abs(m1-m2)<(r1+r2))
+            {
+            real offset=(r1+r2)-math.abs(m1-m2);
+            if(m1<m2)
+                return -offset;
+            return offset;
+            }
+        return 0;
+        }
     real overlap(real offset)
         {
         if (offset<start || offset>stop)

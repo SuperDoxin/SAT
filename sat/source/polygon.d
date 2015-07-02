@@ -24,6 +24,37 @@ class Polygon
             }
         return range;
         }
+    Polygon offset(Vector offset)
+        {
+        auto npoly=new Polygon();
+        foreach(Vertex vertex; this.vertices)
+            {
+            npoly.vertices~=vertex+offset;
+            }
+        return npoly;
+        }
+    Vector overlap(Polygon other)
+        {
+        Vector[] directions=this.vectors~other.vectors;
+        real min_offset=real.infinity;
+        Vector min_direction;
+        foreach(Vector direction; directions)
+            {
+            direction=direction.rot90;
+            Range proj_self=this.project_scalar(direction);
+            Range proj_other=other.project_scalar(direction);
+            real offset=proj_self.overlap(proj_other);
+            if(offset==0)
+                return Vector(0,0);
+            
+            if(math.abs(offset)<min_offset)
+                {
+                min_offset=math.abs(offset);
+                min_direction=direction.unit*offset;
+                }
+            }
+        return min_direction.rot90.rot90;
+        }
     Vector overlap(Vertex pos)
         {
         Vector vecpos=cast(Vector)pos;
@@ -39,7 +70,7 @@ class Polygon
                 return Vector(0,0);
             if(math.abs(offset)<min_offset)
                 {
-                min_offset=offset;
+                min_offset=math.abs(offset);
                 min_direction=direction.unit*offset;
                 }
             }
