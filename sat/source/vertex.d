@@ -1,9 +1,21 @@
+module vertex;
 import math=std.math;
 
+/**
+A range of reals, mainly used for 1d intersection testing.
+*/
 struct Range
     {
+    /// start of range
     real start;
+    
+    ///stop of range
     real stop;
+    
+    /**
+    checks if two ranges overlap and return the smallest offset that would make
+    them not overlap.
+    */
     real overlap(Range other)
         {
         real m1=(this.start+this.stop)/2;
@@ -21,6 +33,11 @@ struct Range
             }
         return 0;
         }
+
+    /**
+    check if offset lies inside this range and returns the smallest offset
+    needed to make it lie outside this range.
+    */
     real overlap(real offset)
         {
         if (offset<start || offset>stop)
@@ -29,9 +46,14 @@ struct Range
         }
     }
 
+/**
+A location in 2d space
+*/
 struct Vertex
     {
+    ///
     real x;
+    ///
     real y;
     Vector opBinary(string op)(Vertex rhs)
         {
@@ -51,9 +73,14 @@ struct Vertex
     
     }
 
+/**
+a vector in 2d space
+*/
 struct Vector
     {
+    ///
     real x;
+    ///
     real y;
     
     Vector opBinary(string op)(real rhs)
@@ -62,16 +89,25 @@ struct Vector
         return v;
         }
 
+    /**
+    return the scalar projection of this vector onto other vector
+    */
     real project_scalar(Vector other)
         {
         return this.dot(other.unit);
         }
     
+    /**
+    return the vector projection of this vector onto other vector
+    */
     Vector project(Vector other)
         {
         return other.unit*this.project_scalar(other);
         }
     
+    /**
+    return the dot product of this vector and other vector
+    */
     real dot(Vector other)
         {
         return this.x*other.x+this.y*other.y;
@@ -79,20 +115,27 @@ struct Vector
 
     @property
         {
+        ///true if this vector has a length of exactly zero
         bool zero()
             {
             return (this.x==0&&this.y==0);
             }
+
+        ///vector magnitude
         real length()
             {
             return math.sqrt(this.dot(this));
             }
+            
+        ///unit vector of this vector
         Vector unit()
             {
             real ln=this.length;
             Vector v={this.x/ln,this.y/ln};
             return v;
             }
+        
+        ///this vector rotated 90 degrees
         Vector rot90()
             {
             return Vector(-this.y,this.x);

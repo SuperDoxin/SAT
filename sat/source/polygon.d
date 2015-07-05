@@ -1,8 +1,14 @@
 import vertex;
 
+///
 class Polygon
     {
     Vertex[] vertices;
+    /**
+    return the scalar projection of this polygon onto vec
+    
+    this function returns a Range of the bounds of this polygons projection
+    */
     Range project_scalar(Vector vec)
         {
         Range range;
@@ -24,6 +30,10 @@ class Polygon
             }
         return range;
         }
+    
+    /**
+    returns a new polygon offset by offset
+    */
     Polygon offset(Vector offset)
         {
         auto npoly=new Polygon();
@@ -33,6 +43,11 @@ class Polygon
             }
         return npoly;
         }
+    
+    /**
+    checks if this and other polygon overlap. returns the smallest vector to
+    make them not overlap or a zero vector if they don't overlap.
+    */
     Vector overlap(Polygon other)
         {
         Vector[] directions=this.vectors~other.vectors;
@@ -55,6 +70,11 @@ class Polygon
             }
         return min_direction.rot90.rot90;
         }
+    
+    /**
+    checks if pos lies within this polygon and returns the smallest offset to
+    make it lie outside this polygon.
+    */
     Vector overlap(Vertex pos)
         {
         Vector vecpos=cast(Vector)pos;
@@ -76,8 +96,12 @@ class Polygon
             }
         return min_direction.rot90.rot90;
         }
+        
     @property
         {
+        /**
+        an array of vectors between vertices in this polygon.
+        */
         Vector[] vectors()
             {
             Vector[] v;
