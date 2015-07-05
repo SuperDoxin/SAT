@@ -1,0 +1,11 @@
+{
+	"name": "sat",
+	"description": "A Separating Axis theorem implementation.",
+	"copyright": "Copyright © 2015, Lieuwe Mosch",
+	"license":"MIT",
+	"authors": ["Lieuwe Mosch"],
+	"dependencies": {
+	},
+	"sourcePaths": [ "source" ],
+    "importPaths": [ "source" ]
+}
