@@ -1,5 +1,6 @@
 module vertex;
 import math=std.math;
+import std.stdio;
 
 /**
 A range of reals, mainly used for 1d intersection testing.
@@ -33,6 +34,16 @@ struct Range
             }
         return 0;
         }
+    
+    ///
+    unittest
+        {
+        Range r1=Range(0,32);
+        Range r2=Range(16,48);
+        
+        assert(r1.overlap(r2)==-16);
+        assert(r2.overlap(r1)==16);
+        }
 
     /**
     check if offset lies inside this range and returns the smallest offset
@@ -42,7 +53,20 @@ struct Range
         {
         if (offset<start || offset>stop)
             return 0;
-        return math.fmin(offset-start,stop-offset);
+        real offs1=start-offset;
+        real offs2=stop-offset;
+        if(math.abs(offs1)<math.abs(offs2))
+            return offs1;
+        else
+            return offs2;
+        }
+    
+    ///
+    unittest
+        {
+        Range r1=Range(0,32);
+        assert(r1.overlap(8)==-8);
+        assert(r1.overlap(24)==8);
         }
     }
 
@@ -97,12 +121,36 @@ struct Vector
         return this.dot(other.unit);
         }
     
+    ///
+    unittest
+        {
+        Vector v1=Vector(1,0);
+        Vector v2=Vector(0,1);
+        
+        assert(v2.project_scalar(v1)==0);
+        assert(v1.project_scalar(v2)==0);
+        assert(v1.project_scalar(v1)==1);
+        assert(v2.project_scalar(v2)==1);
+        }
+    
     /**
     return the vector projection of this vector onto other vector
     */
     Vector project(Vector other)
         {
         return other.unit*this.project_scalar(other);
+        }
+            
+    ///
+    unittest
+        {
+        Vector v1=Vector(1,0);
+        Vector v2=Vector(0,1);
+        
+        assert(v2.project(v1)==Vector(0,0));
+        assert(v1.project(v2)==Vector(0,0));
+        assert(v1.project(v1)==v1);
+        assert(v2.project(v2)==v2);
         }
     
     /**
@@ -120,11 +168,31 @@ struct Vector
             {
             return (this.x==0&&this.y==0);
             }
-
+        
+        ///
+        unittest
+            {
+            Vector v1=Vector(0,0);
+            Vector v2=Vector(7,2);
+            
+            assert(v1.zero==true);
+            assert(v2.zero==false);
+            }
+        
         ///vector magnitude
         real length()
             {
             return math.sqrt(this.dot(this));
+            }
+        
+        ///
+        unittest
+            {
+            Vector v1=Vector(0,0);
+            Vector v2=Vector(5,0);
+            
+            assert(v1.length==0);
+            assert(v2.length==5);
             }
             
         ///unit vector of this vector
@@ -135,10 +203,27 @@ struct Vector
             return v;
             }
         
+        ///
+        unittest
+            {
+            Vector v1=Vector(5,0);
+            assert(v1.unit==Vector(1,0));
+            }
+        
         ///this vector rotated 90 degrees
         Vector rot90()
             {
             return Vector(-this.y,this.x);
+            }
+        
+        ///
+        unittest
+            {
+            Vector v1=Vector(5,0);
+            assert(v1.rot90==Vector(0,5));
+            assert(v1.rot90.rot90==Vector(-5,0));
+            assert(v1.rot90.rot90.rot90==Vector(0,-5));
+            assert(v1.rot90.rot90.rot90.rot90==v1);
             }
         }
     }
