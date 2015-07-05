@@ -31,6 +31,16 @@ class Polygon
         return range;
         }
     
+    ///
+    unittest
+        {
+        Polygon p1=new Polygon();
+        p1.vertices=[Vertex(0,0),Vertex(32,0),Vertex(32,32),Vertex(0,32)]; //a 32x32 square
+        Vector v1=Vector(1,0);
+        
+        assert(p1.project_scalar(v1)==Range(0,32));
+        }
+    
     /**
     returns a new polygon offset by offset
     */
