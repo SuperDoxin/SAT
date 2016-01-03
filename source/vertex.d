@@ -168,62 +168,62 @@ struct Vector
             {
             return (this.x==0&&this.y==0);
             }
+        }
         
-        ///
-        unittest
-            {
-            Vector v1=Vector(0,0);
-            Vector v2=Vector(7,2);
-            
-            assert(v1.zero==true);
-            assert(v2.zero==false);
-            }
+    ///
+    unittest
+        {
+        Vector v1=Vector(0,0);
+        Vector v2=Vector(7,2);
         
-        ///vector magnitude
-        real length()
-            {
-            return math.sqrt(this.dot(this));
-            }
+        assert(v1.zero==true);
+        assert(v2.zero==false);
+        }
+    
+    ///vector magnitude
+    real length()
+        {
+        return math.sqrt(this.dot(this));
+        }
+    
+    ///
+    unittest
+        {
+        Vector v1=Vector(0,0);
+        Vector v2=Vector(5,0);
         
-        ///
-        unittest
-            {
-            Vector v1=Vector(0,0);
-            Vector v2=Vector(5,0);
-            
-            assert(v1.length==0);
-            assert(v2.length==5);
-            }
-            
-        ///unit vector of this vector
-        Vector unit()
-            {
-            real ln=this.length;
-            Vector v={this.x/ln,this.y/ln};
-            return v;
-            }
+        assert(v1.length==0);
+        assert(v2.length==5);
+        }
         
-        ///
-        unittest
-            {
-            Vector v1=Vector(5,0);
-            assert(v1.unit==Vector(1,0));
-            }
-        
-        ///this vector rotated 90 degrees
-        Vector rot90()
-            {
-            return Vector(-this.y,this.x);
-            }
-        
-        ///
-        unittest
-            {
-            Vector v1=Vector(5,0);
-            assert(v1.rot90==Vector(0,5));
-            assert(v1.rot90.rot90==Vector(-5,0));
-            assert(v1.rot90.rot90.rot90==Vector(0,-5));
-            assert(v1.rot90.rot90.rot90.rot90==v1);
-            }
+    ///unit vector of this vector
+    Vector unit()
+        {
+        real ln=this.length;
+        Vector v={this.x/ln,this.y/ln};
+        return v;
+        }
+    
+    ///
+    unittest
+        {
+        Vector v1=Vector(5,0);
+        assert(v1.unit==Vector(1,0));
+        }
+    
+    ///this vector rotated 90 degrees
+    Vector rot90()
+        {
+        return Vector(-this.y,this.x);
+        }
+    
+    ///
+    unittest
+        {
+        Vector v1=Vector(5,0);
+        assert(v1.rot90==Vector(0,5));
+        assert(v1.rot90.rot90==Vector(-5,0));
+        assert(v1.rot90.rot90.rot90==Vector(0,-5));
+        assert(v1.rot90.rot90.rot90.rot90==v1);
         }
     }
