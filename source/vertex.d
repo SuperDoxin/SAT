@@ -112,7 +112,21 @@ struct Vector
         mixin("Vector v={x"~op~"rhs,y"~op~"rhs};");
         return v;
         }
-
+    Vector opBinary(string op)(Vector rhs)
+        {
+        mixin("Vector v={x"~op~"rhs.x,y"~op~"rhs.y};");
+        return v;
+        }
+    
+    unittest
+        {
+        Vector a=Vector(1,2);
+        Vector b=Vector(3,4);
+        Vector c=a+b;
+        assert(c.x==4);
+        assert(c.y==6);
+        }
+    
     /**
     return the scalar projection of this vector onto other vector
     */
