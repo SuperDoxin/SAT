@@ -121,5 +121,28 @@ class Polygon
                 }
             return v;
             }
+        
+        /**
+        the center of gravity for this polygon
+        */
+        Vertex COG()
+            {
+            Vector cog=Vector(0,0);
+            for(size_t i=0;i<this.vertices.length;i++)
+                {
+                cog=(cast(Vector)this.vertices[i])+cog;
+                }
+            cog=cog/this.vertices.length;
+            return cast(Vertex)cog;
+            }
+        }
+    
+    unittest
+        {
+        Polygon p1=new Polygon();
+        p1.vertices=[Vertex(-32,-32),Vertex(32,-32),Vertex(32,32),Vertex(-32,32)];
+        assert(p1.COG==Vertex(0,0));
+        p1=p1.offset(Vector(16,8));
+        assert(p1.COG==Vertex(16,8));
         }
     }
